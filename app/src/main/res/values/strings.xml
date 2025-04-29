@@ -1,3 +1,5 @@
 <resources>
     <string name="app_name">Satellites</string>
+    <string name="retry">Retry</string>
+    <string name="satellite_app">Satellite App</string>
 </resources>

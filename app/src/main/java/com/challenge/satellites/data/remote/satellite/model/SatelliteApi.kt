@@ -3,9 +3,10 @@
  * Reproduction is forbidden without written approval of Sensormatic Electronics, LLC.
  */
 
-package com.challenge.satellites
+package com.challenge.satellites.data.remote.satellite.model
 
-
+import com.challenge.satellites.data.domain.model.Satellite
+import com.challenge.satellites.data.remote.satellite.model.SatelliteCollection.Member
 import com.google.gson.annotations.SerializedName
 
 data class SatelliteCollection(
@@ -41,5 +42,16 @@ data class SatelliteCollection(
         @SerializedName("last") val last: String = "",
         @SerializedName("next") val next: String = "",
         @SerializedName("@type") val type: String = ""
+    )
+}
+
+fun Member.toDomain(): Satellite {
+    return Satellite(
+        id = id,
+        satelliteId = satelliteId,
+        name = name,
+        line1 = line1,
+        line2 = line2,
+        date = date
     )
 }
