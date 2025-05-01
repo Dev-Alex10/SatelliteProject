@@ -12,9 +12,9 @@ import kotlinx.coroutines.flow.Flow
 
 interface SatelliteRepository {
     fun getTleCollection(
-        searchText: String = "",
-        sortBy: Sort = Sort.NAME,
-        sortDirection: SortDirection = SortDirection.ASC
+        searchText: String,
+        sortBy: Sort,
+        sortDirection: SortDirection
     ): Flow<List<Satellite>>
 
     fun getSatelliteDetails(id: Int): Flow<Satellite>
