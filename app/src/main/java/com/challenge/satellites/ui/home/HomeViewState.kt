@@ -6,14 +6,27 @@
 package com.challenge.satellites.ui.home
 
 import com.challenge.satellites.data.domain.model.Satellite
+import com.challenge.satellites.data.remote.satellite.model.Sort
+import com.challenge.satellites.data.remote.satellite.model.SortDirection
 
 sealed interface HomeViewState {
     data object Loading : HomeViewState
 
     data class Success(
-        val satellites: List<Satellite>
+        val satellites: List<Satellite>,
+        val searchText: String = "",
+        val sort: Sort = Sort.NAME,
+        val sortDirection: SortDirection = SortDirection.ASC
     ) : HomeViewState
 
     data class Error(val errorMessage: String) : HomeViewState
 
 }
+
+data class HomeFilterViewState(
+    val searchText: String,
+    val sort: Sort,
+    val sortDirection: SortDirection,
+    var selectedSort: Sort,
+    var selectedSortSelection: SortDirection,
+)

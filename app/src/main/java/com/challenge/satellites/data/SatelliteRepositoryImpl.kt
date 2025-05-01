@@ -8,6 +8,8 @@ package com.challenge.satellites.data
 import com.challenge.satellites.data.domain.model.Satellite
 import com.challenge.satellites.data.local.LocalDataSource
 import com.challenge.satellites.data.remote.RemoteDataSource
+import com.challenge.satellites.data.remote.satellite.model.Sort
+import com.challenge.satellites.data.remote.satellite.model.SortDirection
 import kotlinx.coroutines.flow.Flow
 import kotlinx.coroutines.flow.flow
 import javax.inject.Inject
@@ -19,15 +21,22 @@ class SatelliteRepositoryImpl @Inject constructor(
     private val localDataSource: LocalDataSource,
 ) : SatelliteRepository {
 
-    override fun getTleCollection(): Flow<List<Satellite>> = fetchTleCollection()
-    fun fetchTleCollection() =
-        flow {
-            emit(remoteDataSource.getTleCollection().getOrThrow())
-        }
+    override fun getTleCollection(
+        searchText: String,
+        sortBy: Sort,
+        sortDirection: SortDirection
+    ): Flow<List<Satellite>> = fetchTleCollection(searchText, sortBy, sortDirection)
 
-    override fun getSatelliteDetails(id: Int): Flow<Satellite> =
-        flow {
-            emit(remoteDataSource.getSatelliteDetails(id).getOrThrow())
-        }
+    fun fetchTleCollection(searchText: String, sortBy: Sort, sortDirection: SortDirection) = flow {
+        emit(
+            remoteDataSource.getTleCollection(
+                searchText, sortBy, sortDirection
+            ).getOrThrow()
+        )
+    }
+
+    override fun getSatelliteDetails(id: Int): Flow<Satellite> = flow {
+        emit(remoteDataSource.getSatelliteDetails(id).getOrThrow())
+    }
 
 }
