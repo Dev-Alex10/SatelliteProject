@@ -3,17 +3,17 @@
  * Reproduction is forbidden without written approval of Sensormatic Electronics, LLC.
  */
 
-package com.challenge.satellites.ui.theme.home
+package com.challenge.satellites.ui.details
 
 import com.challenge.satellites.data.domain.model.Satellite
 
-sealed interface HomeViewState {
-    data object Loading : HomeViewState
+sealed interface DetailsViewState {
+    data object Loading : DetailsViewState
 
     data class Success(
-        val satellites: List<Satellite>
-    ) : HomeViewState
+        val satellite: Satellite
+    ) : DetailsViewState
 
-    data class Error(val errorMessage: String) : HomeViewState
+    data class Error(val errorMessage: String) : DetailsViewState
 
 }

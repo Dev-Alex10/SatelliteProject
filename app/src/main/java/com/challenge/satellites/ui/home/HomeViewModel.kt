@@ -3,7 +3,7 @@
  * Reproduction is forbidden without written approval of Sensormatic Electronics, LLC.
  */
 
-package com.challenge.satellites.ui.theme.home
+package com.challenge.satellites.ui.home
 
 import androidx.lifecycle.ViewModel
 import androidx.lifecycle.viewModelScope

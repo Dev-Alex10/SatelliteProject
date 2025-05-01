@@ -13,4 +13,7 @@ class RemoteDataSource @Inject constructor(private val satelliteApi: SatelliteAp
     suspend fun getTleCollection() = runCatching {
         satelliteApi.getCollection().member.map { it.toDomain() }
     }
+    suspend fun getSatelliteDetails(id: Int) = runCatching {
+        satelliteApi.getSatelliteDetails(id).toDomain()
+    }
 }

@@ -10,4 +10,5 @@ import kotlinx.coroutines.flow.Flow
 
 interface SatelliteRepository {
     fun getTleCollection(): Flow<List<Satellite>>
+    fun getSatelliteDetails(id: Int): Flow<Satellite>
 }
