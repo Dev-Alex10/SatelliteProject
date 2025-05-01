@@ -3,4 +3,7 @@
     <string name="retry">Retry</string>
     <string name="satellite_app">Satellite App</string>
     <string name="back">Back</string>
+    <string name="search">Search</string>
+    <string name="search_by_placeholder">Search by...</string>
+    <string name="sort">Sort</string>
 </resources>
