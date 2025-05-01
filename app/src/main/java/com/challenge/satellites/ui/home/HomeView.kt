@@ -3,8 +3,9 @@
  * Reproduction is forbidden without written approval of Sensormatic Electronics, LLC.
  */
 
-package com.challenge.satellites.ui.theme.home
+package com.challenge.satellites.ui.home
 
+import androidx.compose.foundation.clickable
 import androidx.compose.foundation.horizontalScroll
 import androidx.compose.foundation.layout.Arrangement
 import androidx.compose.foundation.layout.Box
@@ -31,6 +32,7 @@ import com.challenge.satellites.R
 @Composable
 fun HomeView(
     viewModel: HomeViewModel = hiltViewModel(),
+    onDetailsClick: (Int) -> Unit,
     modifier: Modifier
 ) {
     val state = viewModel.uiState.collectAsState().value
@@ -67,19 +69,25 @@ fun HomeView(
             val satellites = state.satellites
             LazyColumn(modifier = modifier) {
                 itemsIndexed(satellites) { index, satellite ->
-                    Text(
-                        text = "${index + 1} ${satellite.name}",
+                    Column(
                         modifier = Modifier
-                            .fillMaxWidth()
-                            .padding(16.dp)
-                    )
-                    Text(
-                        text = "${satellite.line1}\n${satellite.line2}",
-                        modifier = Modifier
-                            .fillMaxWidth()
-                            .horizontalScroll(rememberScrollState())
-                            .padding(horizontal = 16.dp)
-                    )
+                            .clickable {
+                                onDetailsClick(satellite.satelliteId)
+                            }) {
+                        Text(
+                            text = "${index + 1} ${satellite.name}",
+                            modifier = Modifier
+                                .fillMaxWidth()
+                                .padding(16.dp)
+                        )
+                        Text(
+                            text = "${satellite.line1}\n${satellite.line2}",
+                            modifier = Modifier
+                                .fillMaxWidth()
+                                .horizontalScroll(rememberScrollState())
+                                .padding(horizontal = 16.dp)
+                        )
+                    }
                 }
             }
         }

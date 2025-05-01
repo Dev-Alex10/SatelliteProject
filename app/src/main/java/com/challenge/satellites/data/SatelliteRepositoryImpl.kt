@@ -25,4 +25,9 @@ class SatelliteRepositoryImpl @Inject constructor(
             emit(remoteDataSource.getTleCollection().getOrThrow())
         }
 
+    override fun getSatelliteDetails(id: Int): Flow<Satellite> =
+        flow {
+            emit(remoteDataSource.getSatelliteDetails(id).getOrThrow())
+        }
+
 }

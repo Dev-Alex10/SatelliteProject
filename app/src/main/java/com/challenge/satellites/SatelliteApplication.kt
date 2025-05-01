@@ -8,10 +8,8 @@ package com.challenge.satellites
 import android.app.Application
 import androidx.compose.foundation.layout.fillMaxSize
 import androidx.compose.foundation.layout.padding
-import androidx.compose.material3.CenterAlignedTopAppBar
 import androidx.compose.material3.ExperimentalMaterial3Api
 import androidx.compose.material3.Scaffold
-import androidx.compose.material3.Text
 import androidx.compose.material3.TopAppBarDefaults
 import androidx.compose.runtime.Composable
 import androidx.compose.runtime.getValue
@@ -20,8 +18,11 @@ import androidx.compose.ui.input.nestedscroll.nestedScroll
 import androidx.compose.ui.res.stringResource
 import androidx.navigation.compose.currentBackStackEntryAsState
 import androidx.navigation.compose.rememberNavController
+import com.challenge.satellites.nav.destination.Details
+import com.challenge.satellites.nav.destination.Home
 import com.challenge.satellites.nav.graph.SatelliteNavHost
 import com.challenge.satellites.ui.theme.SatellitesTheme
+import com.challenge.satellites.ui.utils.SatelliteTopBar
 import dagger.hilt.android.HiltAndroidApp
 import javax.inject.Inject
 
@@ -36,14 +37,19 @@ fun SatelliteApp() {
         val scrollBehavior = TopAppBarDefaults.enterAlwaysScrollBehavior()
         val currentBackStackEntry by navController.currentBackStackEntryAsState()
         val currentDestination = currentBackStackEntry?.destination
+        val currentScreenTitle = when (currentDestination?.route) {
+            Home.route -> Home.name
+            Details.route -> Details.name
+            else -> stringResource(R.string.satellite_app)
+        }
         Scaffold(
             modifier = Modifier.fillMaxSize(),
             topBar = {
-                CenterAlignedTopAppBar(
-                    title = {
-                        Text(text = currentDestination?.route ?: stringResource(R.string.satellite_app))
-                    },
-                    scrollBehavior = scrollBehavior
+                SatelliteTopBar(
+                    canNavigateBack = currentBackStackEntry != null && currentDestination?.route != Home.route,
+                    navigateUp = { navController.navigateUp() },
+                    currentScreenTitle = currentScreenTitle,
+                    scrollBehavior = scrollBehavior,
                 )
             },
             content = {
