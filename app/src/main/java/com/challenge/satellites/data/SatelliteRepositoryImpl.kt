@@ -27,7 +27,7 @@ class SatelliteRepositoryImpl @Inject constructor(
         sortDirection: SortDirection
     ): Flow<List<Satellite>> = fetchTleCollection(searchText, sortBy, sortDirection)
 
-    fun fetchTleCollection(searchText: String, sortBy: Sort, sortDirection: SortDirection) = flow {
+    private fun fetchTleCollection(searchText: String, sortBy: Sort, sortDirection: SortDirection) = flow {
         emit(
             remoteDataSource.getTleCollection(
                 searchText, sortBy, sortDirection
