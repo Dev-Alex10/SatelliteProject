@@ -14,7 +14,7 @@ import androidx.compose.foundation.layout.fillMaxSize
 import androidx.compose.foundation.layout.fillMaxWidth
 import androidx.compose.foundation.layout.padding
 import androidx.compose.foundation.lazy.LazyColumn
-import androidx.compose.foundation.lazy.itemsIndexed
+import androidx.compose.foundation.lazy.items
 import androidx.compose.foundation.rememberScrollState
 import androidx.compose.material.icons.Icons
 import androidx.compose.material.icons.automirrored.filled.List
@@ -42,9 +42,7 @@ import com.challenge.satellites.ui.home.utils.FilterDropDown
 
 @Composable
 fun HomeView(
-    viewModel: HomeViewModel = hiltViewModel(),
-    onDetailsClick: (Int) -> Unit,
-    modifier: Modifier
+    viewModel: HomeViewModel = hiltViewModel(), onDetailsClick: (Int) -> Unit, modifier: Modifier
 ) {
     val state = viewModel.uiState.collectAsState().value
     val filterState = viewModel.filterState.collectAsState().value
@@ -57,8 +55,7 @@ fun HomeView(
         }
 
         is HomeViewState.Error -> Box(
-            modifier = Modifier.fillMaxSize(),
-            contentAlignment = Alignment.Center
+            modifier = Modifier.fillMaxSize(), contentAlignment = Alignment.Center
         ) {
             Column(
                 horizontalAlignment = Alignment.CenterHorizontally,
@@ -117,8 +114,7 @@ fun HomeView(
                                         selectedSortSelection = filterState.selectedSortSelection,
                                         onSelectSortSelection = { selectedSortSelection ->
                                             viewModel.selectSortSelection(selectedSortSelection)
-                                        }
-                                    )
+                                        })
                                     Icon(
                                         imageVector = Icons.AutoMirrored.Filled.List,
                                         contentDescription = stringResource(R.string.sort),
@@ -130,14 +126,13 @@ fun HomeView(
                         singleLine = true
                     )
                 }
-                itemsIndexed(satellites) { index, satellite ->
+                items(satellites) { satellite ->
                     Column(
-                        modifier = Modifier
-                            .clickable {
-                                onDetailsClick(satellite.satelliteId)
-                            }) {
+                        modifier = Modifier.clickable {
+                            onDetailsClick(satellite.satelliteId)
+                        }) {
                         Text(
-                            text = "${index + 1} ${satellite.name}",
+                            text = "${satellite.name}\n Satellite: ${satellite.satelliteId}",
                             modifier = Modifier
                                 .fillMaxWidth()
                                 .padding(16.dp)

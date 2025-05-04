@@ -51,6 +51,6 @@ fun Member.toDomain(): Satellite {
         name = name,
         line1 = line1,
         line2 = line2,
-        date = date
+        date = date,
     )
 }
