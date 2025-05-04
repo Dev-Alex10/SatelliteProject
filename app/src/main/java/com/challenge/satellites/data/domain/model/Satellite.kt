@@ -6,7 +6,6 @@
 package com.challenge.satellites.data.domain.model
 
 data class Satellite(
-    val id: String,
     val satelliteId: Int,
     val name: String,
     val date: String,

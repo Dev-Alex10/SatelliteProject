@@ -25,7 +25,7 @@ fun DetailsView(
     modifier: Modifier
 ) {
     val satellite = viewModel.getSatelliteDetails(id = id).collectAsState(
-        Satellite(id = "", name = "", satelliteId = id, line1 = "", line2 = "", date = "")
+        Satellite(name = "", satelliteId = id, line1 = "", line2 = "", date = "")
     ).value
     val details = listOf(
         "Name" to satellite.name,

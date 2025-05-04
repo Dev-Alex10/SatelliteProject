@@ -19,6 +19,7 @@ import kotlinx.coroutines.flow.MutableStateFlow
 import kotlinx.coroutines.flow.SharingStarted
 import kotlinx.coroutines.flow.StateFlow
 import kotlinx.coroutines.flow.catch
+import kotlinx.coroutines.flow.distinctUntilChanged
 import kotlinx.coroutines.flow.flatMapLatest
 import kotlinx.coroutines.flow.map
 import kotlinx.coroutines.flow.onStart
@@ -34,6 +35,9 @@ class HomeViewModel @Inject constructor(
 ) : ViewModel() {
 
     private var debounceJob: Job? = null
+    private val _searchTextInput = MutableStateFlow("")
+    val searchTextInput: StateFlow<String> = _searchTextInput
+
     private val _filterState = MutableStateFlow(
         HomeFilterViewState(
             searchText = "",
@@ -44,14 +48,21 @@ class HomeViewModel @Inject constructor(
         )
     )
     val filterState: StateFlow<HomeFilterViewState> = _filterState
+
     private val retryTrigger = MutableSharedFlow<Unit>(extraBufferCapacity = 1)
     val uiState = retryTrigger.onStart { emit(Unit) }.flatMapLatest {
-        repository.getTleCollection(
-            filterState.value.searchText,
-            filterState.value.sort,
-            filterState.value.sortDirection
-        ).map { satellites -> HomeViewState.Success(satellites) }
-            .onStart<HomeViewState> { emit(HomeViewState.Loading) }.catch { error ->
+        filterState.map { state ->
+            Triple(state.searchText, state.sort, state.sortDirection)
+        }.distinctUntilChanged().flatMapLatest { (searchText, sort, sortDirection) ->
+            repository.getTleCollection(
+                searchText,
+                sort,
+                sortDirection
+            )
+        }.map {
+            HomeViewState.Success(it)
+        }.onStart<HomeViewState> { emit(HomeViewState.Loading) }
+            .catch { error ->
                 emit(
                     HomeViewState.Error(
                         errorMessage = "An error occurred: ${error.message}"
@@ -69,11 +80,11 @@ class HomeViewModel @Inject constructor(
     }
 
     fun onTextChanged(searchText: String) {
-        _filterState.update {
-            it.copy(searchText = searchText)
-        }
+        _searchTextInput.value = searchText
         debounce(400) {
-            retry()
+            _filterState.update {
+                it.copy(searchText = searchText)
+            }
         }
     }
 
@@ -88,11 +99,10 @@ class HomeViewModel @Inject constructor(
     fun applySort(
         sortBy: Sort, sortDirection: SortDirection
     ) {
-        _filterState.update {
-            it.copy(sort = sortBy, sortDirection = sortDirection)
-        }
-        debounce(500) {
-            retry()
+        debounce(200) {
+            _filterState.update {
+                it.copy(sort = sortBy, sortDirection = sortDirection)
+            }
         }
     }
 
