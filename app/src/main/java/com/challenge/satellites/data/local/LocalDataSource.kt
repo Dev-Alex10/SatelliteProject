@@ -5,7 +5,19 @@
 
 package com.challenge.satellites.data.local
 
-import javax.inject.Inject
+import com.challenge.satellites.data.domain.model.Satellite
+import com.challenge.satellites.data.remote.satellite.model.Sort
+import com.challenge.satellites.data.remote.satellite.model.SortDirection
+import kotlinx.coroutines.flow.Flow
 
-class LocalDataSource @Inject constructor() {
+interface LocalDataSource {
+    fun getSatellites(
+        searchText: String,
+        sort: Sort,
+        sortDirection: SortDirection
+    ): Flow<List<Satellite>>
+
+    fun getSatelliteById(id: Int): Flow<Satellite>
+    suspend fun setSatellites(satellites: List<Satellite>)
+    suspend fun setSatellite(satellite: Satellite)
 }
