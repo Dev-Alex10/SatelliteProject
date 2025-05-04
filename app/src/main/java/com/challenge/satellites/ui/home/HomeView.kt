@@ -80,10 +80,11 @@ fun HomeView(
         is HomeViewState.Success -> {
             // Display the list of satellites
             val satellites = state.satellites
+            val searchText = viewModel.searchTextInput.collectAsState().value
             LazyColumn(modifier = modifier) {
                 item {
                     TextField(
-                        value = filterState.searchText,
+                        value = searchText,
                         onValueChange = viewModel::onTextChanged,
                         modifier = Modifier
                             .padding(start = 16.dp)

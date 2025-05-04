@@ -47,7 +47,6 @@ data class SatelliteCollection(
 
 fun Member.toDomain(): Satellite {
     return Satellite(
-        id = id,
         satelliteId = satelliteId,
         name = name,
         line1 = line1,
