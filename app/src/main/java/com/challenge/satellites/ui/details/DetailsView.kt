@@ -15,6 +15,7 @@ import androidx.compose.runtime.Composable
 import androidx.compose.runtime.collectAsState
 import androidx.compose.ui.Alignment
 import androidx.compose.ui.Modifier
+import androidx.compose.ui.text.font.FontWeight
 import androidx.compose.ui.unit.dp
 import com.challenge.satellites.data.domain.model.Satellite
 
@@ -41,10 +42,14 @@ fun DetailsView(
     ) {
         items(details) { (label, value) ->
             Text(
-                text = "$label: $value",
-                modifier = Modifier.padding(horizontal = 32.dp, vertical = 8.dp)
+                "$label:",
+                modifier = Modifier.padding(horizontal = 32.dp, vertical = 8.dp),
+                fontWeight = FontWeight.Bold
             )
-
+            Text(
+                text = value,
+                modifier = Modifier.padding(horizontal = 32.dp)
+            )
         }
     }
 }

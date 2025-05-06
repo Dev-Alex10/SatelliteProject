@@ -4,6 +4,7 @@
     <string name="satellite_app">Satellite App</string>
     <string name="back">Back</string>
     <string name="search">Search</string>
-    <string name="search_by_placeholder">Search by...</string>
+    <string name="search_by_placeholder">Search by…</string>
     <string name="sort">Sort</string>
+    <string name="no_internet_connection_only_showing_id_and_name_sort_filter">No internet connection only showing id and name sort filter</string>
 </resources>

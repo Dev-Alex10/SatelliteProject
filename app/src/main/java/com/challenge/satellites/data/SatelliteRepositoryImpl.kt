@@ -84,8 +84,4 @@ class SatelliteRepositoryImpl @Inject constructor(
         }
     }
 
-//    = flow {
-//        emit(remoteDataSource.getSatelliteDetails(id).getOrThrow())
-//    }
-
 }
