@@ -1,4 +1,4 @@
-package com.challenge.satellites.data.remote.satellite.model
+package com.challenge.satellites.data.domain.model
 
 enum class SortDirection {
     ASC,

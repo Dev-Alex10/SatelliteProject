@@ -36,17 +36,36 @@ import androidx.compose.ui.Modifier
 import androidx.compose.ui.res.stringResource
 import androidx.compose.ui.text.font.FontWeight
 import androidx.compose.ui.unit.dp
+import androidx.compose.ui.unit.sp
 import androidx.hilt.navigation.compose.hiltViewModel
 import com.challenge.satellites.R
+import com.challenge.satellites.ui.filter.FilterView
 import com.challenge.satellites.ui.home.utils.FilterDropDown
 
 @Composable
 fun HomeView(
-    viewModel: HomeViewModel = hiltViewModel(), onDetailsClick: (Int) -> Unit, modifier: Modifier
+    viewModel: HomeViewModel = hiltViewModel(),
+    onDetailsClick: (Int) -> Unit,
+    modifier: Modifier,
 ) {
     val state = viewModel.uiState.collectAsState().value
     val filterState = viewModel.filterState.collectAsState().value
+    val searchText = viewModel.searchTextInput.collectAsState().value
     var showSortFilter by remember { mutableStateOf(false) }
+    var isFilterView by remember { mutableStateOf(false) }
+
+    if (isFilterView) {
+        return FilterView(
+            {
+                viewModel.applyAllFilters(it)
+                isFilterView = false
+                showSortFilter = false
+            },
+            homeFilterViewState = filterState,
+            onCancelClick = {
+                isFilterView = false
+            })
+    }
     when (state) {
         is HomeViewState.Loading -> {
             Box(modifier = Modifier.fillMaxSize(), contentAlignment = Alignment.Center) {
@@ -77,7 +96,6 @@ fun HomeView(
         is HomeViewState.Success -> {
             // Display the list of satellites
             val satellites = state.satellites
-            val searchText = viewModel.searchTextInput.collectAsState().value
             LazyColumn(modifier = modifier) {
                 item {
                     TextField(
@@ -114,7 +132,11 @@ fun HomeView(
                                         selectedSortSelection = filterState.selectedSortSelection,
                                         onSelectSortSelection = { selectedSortSelection ->
                                             viewModel.selectSortSelection(selectedSortSelection)
-                                        })
+                                        },
+                                        onFilterClick = {
+                                            isFilterView = true
+                                        }
+                                    )
                                     Icon(
                                         imageVector = Icons.AutoMirrored.Filled.List,
                                         contentDescription = stringResource(R.string.sort),
@@ -128,17 +150,30 @@ fun HomeView(
                 }
                 items(satellites) { satellite ->
                     Column(
-                        modifier = Modifier.clickable {
-                            onDetailsClick(satellite.satelliteId)
-                        }) {
+                        modifier = Modifier
+                            .clickable {
+                                onDetailsClick(satellite.satelliteId)
+                            }
+                            .padding(8.dp)
+                    ) {
                         Text(
-                            text = "${satellite.name}\n Satellite: ${satellite.satelliteId}",
+                            text = satellite.name,
                             modifier = Modifier
                                 .fillMaxWidth()
-                                .padding(16.dp)
+                                .padding(8.dp),
+                            fontSize = 24.sp,
+                            fontWeight = FontWeight.Bold
+                        )
+                        Text(
+                            text = "Satellite: ${satellite.satelliteId}",
+                            fontSize = 16.sp,
+                            modifier = Modifier
+                                .fillMaxWidth()
+                                .padding(horizontal = 16.dp)
                         )
                         Text(
                             text = "${satellite.line1}\n${satellite.line2}",
+                            fontSize = 16.sp,
                             modifier = Modifier
                                 .fillMaxWidth()
                                 .horizontalScroll(rememberScrollState())

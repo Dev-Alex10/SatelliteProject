@@ -5,9 +5,12 @@
 
 package com.challenge.satellites.ui.home
 
+import com.challenge.satellites.data.domain.model.Eccentricity
+import com.challenge.satellites.data.domain.model.Inclination
+import com.challenge.satellites.data.domain.model.Period
 import com.challenge.satellites.data.domain.model.Satellite
-import com.challenge.satellites.data.remote.satellite.model.Sort
-import com.challenge.satellites.data.remote.satellite.model.SortDirection
+import com.challenge.satellites.data.domain.model.Sort
+import com.challenge.satellites.data.domain.model.SortDirection
 
 sealed interface HomeViewState {
     data object Loading : HomeViewState
@@ -24,9 +27,12 @@ sealed interface HomeViewState {
 }
 
 data class HomeFilterViewState(
-    val searchText: String,
-    val sort: Sort,
-    val sortDirection: SortDirection,
-    var selectedSort: Sort,
-    var selectedSortSelection: SortDirection,
+    val searchText: String = "",
+    val sort: Sort = Sort.NAME,
+    val selectedSort: Sort = sort,
+    val sortDirection: SortDirection = SortDirection.ASC,
+    val selectedSortSelection: SortDirection = sortDirection,
+    val eccentricity: Eccentricity = Eccentricity.NONE,
+    val inclination: Inclination = Inclination.NONE,
+    val period: Period = Period.NONE,
 )

@@ -8,8 +8,8 @@ package com.challenge.satellites.ui.home
 import androidx.lifecycle.ViewModel
 import androidx.lifecycle.viewModelScope
 import com.challenge.satellites.data.SatelliteRepository
-import com.challenge.satellites.data.remote.satellite.model.Sort
-import com.challenge.satellites.data.remote.satellite.model.SortDirection
+import com.challenge.satellites.data.domain.model.Sort
+import com.challenge.satellites.data.domain.model.SortDirection
 import dagger.hilt.android.lifecycle.HiltViewModel
 import kotlinx.coroutines.ExperimentalCoroutinesApi
 import kotlinx.coroutines.Job
@@ -38,30 +38,33 @@ class HomeViewModel @Inject constructor(
     private val _searchTextInput = MutableStateFlow("")
     val searchTextInput: StateFlow<String> = _searchTextInput
 
-    private val _filterState = MutableStateFlow(
-        HomeFilterViewState(
-            searchText = "",
-            sort = Sort.NAME,
-            sortDirection = SortDirection.ASC,
-            selectedSort = Sort.NAME,
-            selectedSortSelection = SortDirection.ASC
-        )
-    )
+    private val _filterState = MutableStateFlow(HomeFilterViewState())
     val filterState: StateFlow<HomeFilterViewState> = _filterState
 
     private val retryTrigger = MutableSharedFlow<Unit>(extraBufferCapacity = 1)
     val uiState = retryTrigger.onStart { emit(Unit) }.flatMapLatest {
         filterState.map { state ->
-            Triple(state.searchText, state.sort, state.sortDirection)
-        }.distinctUntilChanged().flatMapLatest { (searchText, sort, sortDirection) ->
-            repository.getTleCollection(
-                searchText,
-                sort,
-                sortDirection
+            HomeFilterViewState(
+                searchText = state.searchText,
+                sort = state.sort,
+                sortDirection = state.sortDirection,
+                eccentricity = state.eccentricity,
+                inclination = state.inclination,
+                period = state.period
             )
-        }.map {
-            HomeViewState.Success(it)
-        }.onStart<HomeViewState> { emit(HomeViewState.Loading) }
+        }.distinctUntilChanged()
+            .flatMapLatest { state ->
+                repository.getTleCollection(
+                    searchText = state.searchText,
+                    sortBy = state.sort,
+                    sortDirection = state.sortDirection,
+                    eccentricity = state.eccentricity,
+                    inclination = state.inclination,
+                    period = state.period
+                )
+            }.map {
+                HomeViewState.Success(it)
+            }.onStart<HomeViewState> { emit(HomeViewState.Loading) }
             .catch { error ->
                 emit(
                     HomeViewState.Error(
@@ -102,6 +105,20 @@ class HomeViewModel @Inject constructor(
         debounce(200) {
             _filterState.update {
                 it.copy(sort = sortBy, sortDirection = sortDirection)
+            }
+        }
+    }
+
+    fun applyAllFilters(filter: HomeFilterViewState) {
+        debounce(200) {
+            _filterState.update {
+                it.copy(
+                    sort = filter.selectedSort,
+                    sortDirection = filter.selectedSortSelection,
+                    eccentricity = filter.eccentricity,
+                    inclination = filter.inclination,
+                    period = filter.period,
+                )
             }
         }
     }
