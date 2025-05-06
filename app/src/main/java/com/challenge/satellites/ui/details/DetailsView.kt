@@ -17,6 +17,7 @@ import androidx.compose.ui.Alignment
 import androidx.compose.ui.Modifier
 import androidx.compose.ui.text.font.FontWeight
 import androidx.compose.ui.unit.dp
+import androidx.compose.ui.unit.sp
 import com.challenge.satellites.data.domain.model.Satellite
 
 @Composable
@@ -44,10 +45,12 @@ fun DetailsView(
             Text(
                 "$label:",
                 modifier = Modifier.padding(horizontal = 32.dp, vertical = 8.dp),
+                fontSize = 24.sp,
                 fontWeight = FontWeight.Bold
             )
             Text(
                 text = value,
+                fontSize = 16.sp,
                 modifier = Modifier.padding(horizontal = 32.dp)
             )
         }

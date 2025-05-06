@@ -7,4 +7,11 @@
     <string name="search_by_placeholder">Search by…</string>
     <string name="sort">Sort</string>
     <string name="no_internet_connection_only_showing_id_and_name_sort_filter">No internet connection only showing id and name sort filter</string>
+    <string name="apply">Apply</string>
+    <string name="cancel">Cancel</string>
+    <string name="period">Period</string>
+    <string name="inclination">Inclination</string>
+    <string name="more_filters">More Filters</string>
+    <string name="sort_direction">Sort Direction</string>
+    <string name="eccentricity">Eccentricity</string>
 </resources>

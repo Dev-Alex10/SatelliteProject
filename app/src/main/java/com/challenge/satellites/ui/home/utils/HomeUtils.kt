@@ -10,17 +10,17 @@ import androidx.compose.foundation.layout.fillMaxWidth
 import androidx.compose.foundation.layout.padding
 import androidx.compose.material3.Button
 import androidx.compose.material3.DropdownMenu
-import androidx.compose.material3.RadioButton
 import androidx.compose.material3.Text
+import androidx.compose.material3.TextButton
 import androidx.compose.runtime.Composable
-import androidx.compose.ui.Alignment
 import androidx.compose.ui.Modifier
 import androidx.compose.ui.platform.LocalContext
 import androidx.compose.ui.res.stringResource
 import androidx.compose.ui.unit.dp
 import com.challenge.satellites.R
-import com.challenge.satellites.data.remote.satellite.model.Sort
-import com.challenge.satellites.data.remote.satellite.model.SortDirection
+import com.challenge.satellites.data.domain.model.Sort
+import com.challenge.satellites.data.domain.model.SortDirection
+import com.challenge.satellites.ui.utils.FilterItem
 
 @Composable
 fun FilterDropDown(
@@ -30,7 +30,8 @@ fun FilterDropDown(
     selectedSort: Sort,
     selectedSortSelection: SortDirection,
     onSelectSort: (Sort) -> Unit,
-    onSelectSortSelection: (SortDirection) -> Unit
+    onSelectSortSelection: (SortDirection) -> Unit,
+    onFilterClick: () -> Unit
 ) {
     DropdownMenu(
         expanded = showSortFilter,
@@ -44,12 +45,12 @@ fun FilterDropDown(
             ) {
                 if (!LocalContext.current.isNetworkAvailable()) {
                     val dropDown = listOf(Sort.ID, Sort.NAME)
-                    DropDownItem(
+                    FilterItem(
                         entries = dropDown,
                         selectedSort = selectedSort
                     ) { onSelectSort(it) }
                 } else {
-                    DropDownItem(
+                    FilterItem(
                         entries = Sort.entries,
                         selectedSort = selectedSort
                     ) { onSelectSort(it) }
@@ -60,34 +61,20 @@ fun FilterDropDown(
                     .fillMaxWidth()
                     .padding(end = 8.dp)
             ) {
-                DropDownItem(
+                FilterItem(
                     entries = SortDirection.entries,
                     selectedSort = selectedSortSelection
                 ) { onSelectSortSelection(it) }
             }
         }
-        Button({ onSortClick(selectedSort, selectedSortSelection) }) {
-            Text(stringResource(R.string.sort))
-        }
-    }
-}
-
-@Composable
-fun <T : Enum<T>> DropDownItem(
-    entries: List<T>,
-    selectedSort: T,
-    onClickAction: (T) -> Unit
-) {
-    entries.forEach {
-        Row(
-            verticalAlignment = Alignment.CenterVertically,
-            modifier = Modifier.fillMaxWidth()
-        ) {
-            Text(it.name, modifier = Modifier.padding(end = 4.dp))
+        Row {
+            Button({ onSortClick(selectedSort, selectedSortSelection) }) {
+                Text(stringResource(R.string.sort))
+            }
             Spacer(modifier = Modifier.weight(1f))
-            RadioButton(selected = selectedSort == it, onClick = {
-                onClickAction(it)
-            })
+            TextButton(onClick = onFilterClick) {
+                Text(stringResource(R.string.more_filters))
+            }
         }
     }
 }

@@ -10,8 +10,8 @@ import com.challenge.satellites.data.domain.model.Satellite
 import com.challenge.satellites.data.domain.model.toDatabaseEntity
 import com.challenge.satellites.data.local.satellite.SatelliteDao
 import com.challenge.satellites.data.local.satellite.model.toDomain
-import com.challenge.satellites.data.remote.satellite.model.Sort
-import com.challenge.satellites.data.remote.satellite.model.SortDirection
+import com.challenge.satellites.data.domain.model.Sort
+import com.challenge.satellites.data.domain.model.SortDirection
 import kotlinx.coroutines.flow.Flow
 import kotlinx.coroutines.flow.map
 import javax.inject.Inject

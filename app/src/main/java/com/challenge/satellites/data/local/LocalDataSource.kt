@@ -6,8 +6,8 @@
 package com.challenge.satellites.data.local
 
 import com.challenge.satellites.data.domain.model.Satellite
-import com.challenge.satellites.data.remote.satellite.model.Sort
-import com.challenge.satellites.data.remote.satellite.model.SortDirection
+import com.challenge.satellites.data.domain.model.Sort
+import com.challenge.satellites.data.domain.model.SortDirection
 import kotlinx.coroutines.flow.Flow
 
 interface LocalDataSource {
