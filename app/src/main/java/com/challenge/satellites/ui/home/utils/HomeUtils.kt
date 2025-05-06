@@ -33,6 +33,7 @@ fun FilterDropDown(
     onSelectSortSelection: (SortDirection) -> Unit,
     onFilterClick: () -> Unit
 ) {
+    val networkAvailable = LocalContext.current.isNetworkAvailable()
     DropdownMenu(
         expanded = showSortFilter,
         onDismissRequest = onDismissRequest
@@ -43,7 +44,7 @@ fun FilterDropDown(
                     .fillMaxWidth(0.65f)
                     .padding(start = 8.dp)
             ) {
-                if (!LocalContext.current.isNetworkAvailable()) {
+                if (!networkAvailable) {
                     val dropDown = listOf(Sort.ID, Sort.NAME)
                     FilterItem(
                         entries = dropDown,
@@ -71,9 +72,11 @@ fun FilterDropDown(
             Button({ onSortClick(selectedSort, selectedSortSelection) }) {
                 Text(stringResource(R.string.sort))
             }
-            Spacer(modifier = Modifier.weight(1f))
-            TextButton(onClick = onFilterClick) {
-                Text(stringResource(R.string.more_filters))
+            if (networkAvailable) {
+                Spacer(modifier = Modifier.weight(1f))
+                TextButton(onClick = onFilterClick) {
+                    Text(stringResource(R.string.more_filters))
+                }
             }
         }
     }
