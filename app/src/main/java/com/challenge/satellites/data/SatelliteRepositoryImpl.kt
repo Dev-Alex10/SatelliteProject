@@ -104,7 +104,7 @@ class SatelliteRepositoryImpl @Inject constructor(
     ): Boolean =
         eccentricity == Eccentricity.NONE && inclination == Inclination.NONE && period == Period.NONE
 
-    override fun getSatelliteDetails(id: Int): Flow<Satellite> {
+    override fun getSatelliteDetails(id: Int): Flow<Satellite?> {
         return localDataSource.getSatelliteById(id).onStart {
             fetchSatelliteDetailsIfNeeded(id)
         }

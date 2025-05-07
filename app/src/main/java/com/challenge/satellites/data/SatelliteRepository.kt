@@ -23,5 +23,5 @@ interface SatelliteRepository {
         period: Period,
     ): Flow<List<Satellite>>
 
-    fun getSatelliteDetails(id: Int): Flow<Satellite>
+    fun getSatelliteDetails(id: Int): Flow<Satellite?>
 }
