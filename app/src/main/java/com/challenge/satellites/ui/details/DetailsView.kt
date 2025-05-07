@@ -30,11 +30,11 @@ fun DetailsView(
         Satellite(name = "", satelliteId = id, line1 = "", line2 = "", date = "")
     ).value
     val details = listOf(
-        "Name" to satellite.name,
-        "Satellite ID" to satellite.satelliteId.toString(),
-        "Date" to satellite.date,
-        "Line 1" to satellite.line1,
-        "Line 2" to satellite.line2
+        "Name" to satellite?.name,
+        "Satellite ID" to satellite?.satelliteId.toString(),
+        "Date" to satellite?.date,
+        "Line 1" to satellite?.line1,
+        "Line 2" to satellite?.line2
     )
     LazyColumn(
         modifier = modifier.fillMaxSize(),
@@ -49,7 +49,7 @@ fun DetailsView(
                 fontWeight = FontWeight.Bold
             )
             Text(
-                text = value,
+                text = value ?: "N/A",
                 fontSize = 16.sp,
                 modifier = Modifier.padding(horizontal = 32.dp)
             )

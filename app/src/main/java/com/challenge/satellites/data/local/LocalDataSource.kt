@@ -17,7 +17,7 @@ interface LocalDataSource {
         sortDirection: SortDirection
     ): Flow<List<Satellite>>
 
-    fun getSatelliteById(id: Int): Flow<Satellite>
+    fun getSatelliteById(id: Int): Flow<Satellite?>
     suspend fun setSatellites(satellites: List<Satellite>)
     suspend fun setSatellite(satellite: Satellite)
 }

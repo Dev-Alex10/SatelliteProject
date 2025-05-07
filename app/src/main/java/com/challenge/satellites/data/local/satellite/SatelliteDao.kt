@@ -16,7 +16,7 @@ interface SatelliteDao {
     fun getSatellites(query: SimpleSQLiteQuery): Flow<List<SatelliteEntity>>
 
     @Query("SELECT * FROM Satellite WHERE satelliteId = :satelliteId")
-    fun getSatelliteDetails(satelliteId: Int): Flow<SatelliteEntity>
+    fun getSatelliteDetails(satelliteId: Int): Flow<SatelliteEntity?>
 
     @Insert(onConflict = OnConflictStrategy.REPLACE)
     suspend fun insertSatellites(satellite: List<SatelliteEntity>)

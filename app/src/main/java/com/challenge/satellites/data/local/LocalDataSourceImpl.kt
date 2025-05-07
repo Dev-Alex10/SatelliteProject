@@ -30,8 +30,8 @@ class LocalDataSourceImpl @Inject constructor(
         return satelliteDao.getSatellites(query).map { list -> list.map { it.toDomain() } }
     }
 
-    override fun getSatelliteById(id: Int): Flow<Satellite> {
-        return satelliteDao.getSatelliteDetails(id).map { it.toDomain() }
+    override fun getSatelliteById(id: Int): Flow<Satellite?> {
+        return satelliteDao.getSatelliteDetails(id).map { it?.toDomain() }
     }
 
     override suspend fun setSatellites(satellites: List<Satellite>) {
